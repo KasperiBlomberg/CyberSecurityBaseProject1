@@ -5,6 +5,32 @@
 </head>
 <body>
     <h2>Welcome!</h2>
-    <p>You are logged in.</p>
+    {% if user.is_authenticated %}
+        <h2>Welcome, {{ user.username }}!</h2>
+    {% else %}
+        <h2>Please log in</h2>
+        <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+
+    <h2>Create Post</h2>
+
+    <form method="POST">
+        <!-- uncomment the {% csrf_token %} to fix -->
+        <!-- {% csrf_token %} -->
+        <textarea name="content" placeholder="Write something..." required></textarea>
+        <br>
+        <button type="submit">Post</button>
+    </form>
+
+    <h2>All Posts</h2>
+
+    {% for post in posts %}
+        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+            <strong>{{ post.user.username }}</strong> says:
+            <p>{{ post.content }}</p>
+        </div>
+    {% empty %}
+        <p>No posts yet!</p>
+    {% endfor %}
 </body>
 </html>
